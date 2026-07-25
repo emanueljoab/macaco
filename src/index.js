@@ -109,11 +109,6 @@ client.on("messageCreate", async (message) => {
 
     if (message.author.bot) return;
 
-    if (content === "oi") {
-        message.reply("vai tomar no cu");
-        log(message, `vai tomar no cu`);
-    }
-
     if (!message.guild) return;
 
     const guildId = message.guild.id;

@@ -14,8 +14,8 @@
       <div class="header-text">
         <h1>Gerador de Macaco Aleatório</h1>
         <p>
-          <span class="en">Privacy Policy &mdash; last updated: July 2, 2026</span>
-          <span class="pt">Política de Privacidade &mdash; última atualização: 2 de julho de 2026</span>
+          <span class="en">Privacy Policy &mdash; last updated: July 25, 2026</span>
+          <span class="pt">Política de Privacidade &mdash; última atualização: 25 de julho de 2026</span>
         </p>
       </div>
       <div class="header-actions">
@@ -40,46 +40,111 @@
     </p>
 
     <h2>
-      <span class="en">2. Data Collected</span>
-      <span class="pt">2. Dados coletados</span>
+      <span class="en">2. Data Stored</span>
+      <span class="pt">2. Dados armazenados</span>
     </h2>
-    <p class="en">The bot stores only the data strictly necessary for its operation:</p>
-    <p class="pt">O bot armazena apenas os dados estritamente necessários para seu funcionamento:</p>
+    <p class="en">
+      The bot permanently stores only the data strictly necessary for its operation. Message
+      content is <strong>never</strong> part of this data &mdash; see section 3 for how message
+      content is processed.
+    </p>
+    <p class="pt">
+      O bot armazena permanentemente apenas os dados estritamente necessários para seu
+      funcionamento. O conteúdo das mensagens <strong>nunca</strong> faz parte desses dados
+      &mdash; veja a seção 3 para saber como o conteúdo das mensagens é processado.
+    </p>
     <ul class="en">
       <li><strong>Discord user ID and username</strong> — for rankings and match history.</li>
       <li><strong>Server (guild) ID and name</strong> — to separate data between different servers.</li>
       <li><strong>Game statistics</strong> — wins/losses in rock-paper-scissors and personal records for entertainment commands (<code>howgay</code>, <code>pp</code>, <code>simp</code>, <code>stank</code>).</li>
       <li><strong>Server language preference</strong> — Portuguese or English.</li>
+      <li><strong>Server command prefix</strong> — the prefix configured for the server, if changed from the default.</li>
     </ul>
     <ul class="pt">
       <li><strong>ID e nome de usuário do Discord</strong> — para rankings e histórico de partidas.</li>
       <li><strong>ID e nome do servidor (guild)</strong> — para separar dados entre servidores distintos.</li>
       <li><strong>Estatísticas de jogo</strong> — vitórias/derrotas no jokenpo e recordes pessoais dos comandos de entretenimento (<code>howgay</code>, <code>pp</code>, <code>simp</code>, <code>stank</code>).</li>
       <li><strong>Preferência de idioma do servidor</strong> — português ou inglês.</li>
+      <li><strong>Prefixo de comando do servidor</strong> — o prefixo configurado para o servidor, caso alterado do padrão.</li>
     </ul>
 
     <h2>
-      <span class="en">3. Use of Data</span>
-      <span class="pt">3. Uso dos dados</span>
+      <span class="en">3. Message Content Processing</span>
+      <span class="pt">3. Processamento do conteúdo das mensagens</span>
     </h2>
-    <p class="en">The collected data is used solely for:</p>
-    <p class="pt">Os dados coletados são utilizados somente para:</p>
+    <p class="en">
+      The bot reads message content in real time for the two purposes described below. In neither
+      case is message content written to a database or retained beyond the moment it is processed.
+    </p>
+    <p class="pt">
+      O bot lê o conteúdo das mensagens em tempo real para as duas finalidades descritas abaixo.
+      Em nenhum dos casos o conteúdo é gravado em banco de dados ou retido além do momento em que
+      é processado.
+    </p>
+    <ul class="en">
+      <li>
+        <strong>Automated spam detection</strong> — the bot compares each message against the
+        author's own recent messages to identify identical content posted across multiple channels
+        within a short time window (10 seconds, threshold of 3 distinct channels), a pattern typical
+        of compromised accounts and spam bots. When this pattern is detected, the bot deletes the
+        duplicate messages and applies an automatic 30-minute timeout to the author.
+      </li>
+      <li>
+        <strong>Command interpretation</strong> — the bot checks whether a message begins with the
+        server's configured prefix in order to identify and execute a command.
+      </li>
+    </ul>
+    <ul class="pt">
+      <li>
+        <strong>Detecção automatizada de spam</strong> — o bot compara cada mensagem com as
+        mensagens recentes do próprio autor para identificar conteúdo idêntico publicado em
+        múltiplos canais dentro de uma janela curta de tempo (10 segundos, limite de 3 canais
+        distintos), padrão típico de contas comprometidas e bots de spam. Ao detectar esse padrão,
+        o bot apaga as mensagens duplicadas e aplica um timeout automático de 30 minutos ao autor.
+      </li>
+      <li>
+        <strong>Interpretação de comandos</strong> — o bot verifica se a mensagem começa com o
+        prefixo configurado no servidor para identificar e executar um comando.
+      </li>
+    </ul>
+    <p class="en">
+      Message content used for spam detection is held only in memory. It is only eligible for
+      comparison within the 10-second window; entries outside that window are purged by a periodic
+      cleanup that runs every five minutes, or when the same user sends their next message. A
+      user's history is cleared immediately when a spam event is handled. Message content used for
+      command interpretation is read only to identify the command and is not retained afterwards.
+    </p>
+    <p class="pt">
+      O conteúdo utilizado na detecção de spam é mantido somente em memória. Ele só é elegível para
+      comparação dentro da janela de 10 segundos; entradas fora dessa janela são removidas por uma
+      limpeza periódica executada a cada cinco minutos, ou quando o mesmo usuário envia sua
+      mensagem seguinte. O histórico de um usuário é apagado imediatamente quando um evento de spam
+      é tratado. O conteúdo utilizado na interpretação de comandos é lido apenas para identificar o
+      comando e não é retido depois disso.
+    </p>
+
+    <h2>
+      <span class="en">4. Use of Stored Data</span>
+      <span class="pt">4. Uso dos dados armazenados</span>
+    </h2>
+    <p class="en">The data listed in section 2 is used solely for:</p>
+    <p class="pt">Os dados listados na seção 2 são utilizados somente para:</p>
     <ul class="en">
       <li>Displaying rankings and match history within the server.</li>
       <li>Persisting personal records between sessions.</li>
-      <li>Applying the language preference configured by the server.</li>
+      <li>Applying the language and prefix preferences configured by the server.</li>
     </ul>
     <ul class="pt">
       <li>Exibir rankings e histórico de partidas dentro do servidor.</li>
       <li>Persistir recordes pessoais entre sessões.</li>
-      <li>Aplicar a preferência de idioma configurada pelo servidor.</li>
+      <li>Aplicar as preferências de idioma e prefixo configuradas pelo servidor.</li>
     </ul>
     <p class="en">Data is <strong>not</strong> sold, shared, or used for commercial or advertising purposes.</p>
     <p class="pt">Os dados <strong>não são</strong> vendidos, compartilhados nem utilizados para fins comerciais ou publicitários.</p>
 
     <h2>
-      <span class="en">4. Retention and Deletion</span>
-      <span class="pt">4. Retenção e exclusão</span>
+      <span class="en">5. Retention and Deletion</span>
+      <span class="pt">5. Retenção e exclusão</span>
     </h2>
     <p class="en">
       Data is kept while the bot is present in the server or while the user continues to interact
@@ -92,8 +157,8 @@
     </p>
 
     <h2>
-      <span class="en">5. Security</span>
-      <span class="pt">5. Segurança</span>
+      <span class="en">6. Security</span>
+      <span class="pt">6. Segurança</span>
     </h2>
     <p class="en">
       Data is stored locally in an SQLite database on the bot host server.
@@ -105,8 +170,8 @@
     </p>
 
     <h2>
-      <span class="en">6. Changes to This Policy</span>
-      <span class="pt">6. Alterações nesta política</span>
+      <span class="en">7. Changes to This Policy</span>
+      <span class="pt">7. Alterações nesta política</span>
     </h2>
     <p class="en">
       This policy may be updated periodically. The date of the last update will always be indicated
@@ -118,8 +183,8 @@
     </p>
 
     <h2>
-      <span class="en">7. Contact</span>
-      <span class="pt">7. Contato</span>
+      <span class="en">8. Contact</span>
+      <span class="pt">8. Contato</span>
     </h2>
     <p class="en">For questions, data deletion requests, or any other privacy-related matter:</p>
     <p class="pt">Para dúvidas, solicitações de exclusão de dados ou qualquer outro assunto relacionado à privacidade:</p>
