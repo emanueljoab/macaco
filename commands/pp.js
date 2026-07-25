@@ -13,7 +13,7 @@ async function execute(message, _args, _db, translate) {
             .setDescription(await translate("pp", "setDescription", user.username, pp))
             .setFooter({ text: `${tamanho} cm` });
         await message.reply({ embeds: [embed] });
-        log(message, `Pipi de ${user.username} ${pp} ${tamanho} cm`);
+        log(message, `Pipi de ${user.username}: ${tamanho} cm`);
         updateRecord(message.guild.id, message.guild.name, user.id, user.username, "max_pp", tamanho);
     } catch (err) {
         const embed = monkeyEmbed(await translate("pp", "error"));

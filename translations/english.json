@@ -136,9 +136,9 @@
         "searching": "Searching for a monkey... 🔍"
     },
     "ping": {
-        "calculating": "Calculating...",
         "error": "An error occurred while trying to calculate the latency.",
-        "latency": "Latency: {0} ms"
+        "latency": "Latency: {0} ms",
+        "apiLatency": "Discord: {0} ms"
     },
     "pp": {
         "error": "An error occurred while trying to measure the peepee.",

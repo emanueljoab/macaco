@@ -135,9 +135,9 @@
         "searching": "Procurando macaco... 🔍"
     },
     "ping": {
-        "calculating": "Calculando...",
         "error": "Ocorreu um erro ao tentar calcular a latência.",
-        "latency": "Latência: {0} ms"
+        "latency": "Latência: {0} ms",
+        "apiLatency": "Discord: {0} ms"
     },
     "pp": {
         "error": "Ocorreu um erro ao tentar medir o pipi.",
