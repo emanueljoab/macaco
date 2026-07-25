@@ -15,5 +15,5 @@ sqlite3 "$DIR/macaco.db" ".backup '$SNAPSHOT'" || { log "ERRO: backup do sqlite 
 scp "$SNAPSHOT" "$BACKUP_HOST:$BACKUP_DIR/macaco-$TODAY.db" || { log "ERRO: envio via scp falhou"; exit 1; }
 rm -f "$SNAPSHOT"
 echo "$TODAY" > "$MARKER"
-log "Backup de $TODAY enviado para $BACKUP_HOST"
-ssh "$BACKUP_HOST" "forfiles /P ${BACKUP_DIR//\//\\} /M *.db /D -30 /C \"cmd /c del @path\"" || log "AVISO: limpeza de backups antigos falhou"
+log "Backup de $TODAY enviado para $BACKUP_HOST ($BACKUP_DIR)"
+ssh "$BACKUP_HOST" "forfiles /P ${BACKUP_DIR//\//\\} /M *.db /D -30 /C \"cmd /c del @path\"" >/dev/null 2>&1
