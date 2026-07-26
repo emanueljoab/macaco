@@ -20,10 +20,6 @@ function monkeyEmbed(text) {
         .setThumbnail(randomThumbnail());
 }
 
-function timestamp() {
-    return new Date().toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" }).replace(",", "");
-}
-
 function getFile() {
     const lines = new Error().stack.split("\n");
     const line = lines.find(l => l.includes(".js") && !l.includes("utils.js"));
@@ -43,7 +39,7 @@ function format(message, text, paint) {
     const context = (guild || user)
         ? `[${paint("cyan", guild ?? "DM")}] [${paint("magenta", getFile())}] [${paint("green", user ?? "?")}]`
         : `[${paint("yellow", "SYSTEM")}] [${paint("magenta", getFile())}]`;
-    return `${paint("dim", `[${timestamp()}]`)} ${context} [${text}]`;
+    return `${context} [${text}]`;
 }
 
 function emit(writer, message, text, textColor) {
