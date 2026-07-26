@@ -178,7 +178,27 @@ client.on("messageCreate", async (message) => {
     }
 });
 
-client.login(process.env.TOKEN);
+// O login inicial falha se a rede ainda não estiver de pé (queda de energia, boot do host):
+// o DNS devolve EBUSY/EAI_AGAIN e o bot fica no ar sem nunca conectar. Insistir até resolver.
+const LOGIN_RETRY_MS = 15_000;
+const FATAL_LOGIN_CODES = new Set(["TokenInvalid", "TokenMissing", "DisallowedIntents"]);
+
+async function login() {
+    while (true) {
+        try {
+            return await client.login(process.env.TOKEN);
+        } catch (err) {
+            if (FATAL_LOGIN_CODES.has(err.code)) {
+                error(null, `Não dá pra conectar no Discord: ${err.message}`);
+                process.exit(1); // Token ou intents errados; retry não resolve
+            }
+            warn(null, `Falha ao conectar no Discord (${err.message}); tentando de novo em ${LOGIN_RETRY_MS / 1000}s`);
+            await new Promise(resolve => setTimeout(resolve, LOGIN_RETRY_MS));
+        }
+    }
+}
+
+login();
 
 process.on("unhandledRejection", (err) => {
     error(null, `Unhandled rejection: ${err?.message ?? err}`);
