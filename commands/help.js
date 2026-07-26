@@ -7,7 +7,7 @@ async function execute(client, message, _args, _db, translate) {
 
         const cabecalho = linhas.slice(0, 1);
         const comandos = linhas.slice(1).sort();
-        const descricaoOrdenada = [...cabecalho, "", ...comandos].join('\n');
+        const descricaoOrdenada = [...cabecalho, "", ...comandos, "", await translate("help", "links")].join('\n');
 
         const embed = new EmbedBuilder()
             .setTitle(await translate("help", "setTitle"))

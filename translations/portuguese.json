@@ -82,7 +82,8 @@
             "**`simp`**: Mede o quão simp alguém é.",
             "**`fedor`**: Mede o fedor de alguém.",
             "**`perfil`**: Mostra informações sobre o usuário."
-        ]
+        ],
+        "links": "-# 🔒 [Política de Privacidade](https://emanueljoab.github.io/macaco/privacy) · 💬 [Suporte](https://discord.com/invite/y8REnkPgKK)"
     },
     "howgay": {
         "description1": "{0} é {1}% gay 🏳️‍🌈",

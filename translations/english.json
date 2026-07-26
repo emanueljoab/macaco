@@ -83,7 +83,8 @@
             "**`simp`**: Measures how simp someone is.",
             "**`stank`**: Measure someone's stench.",
             "**`user`**: Show information about the user."
-        ]
+        ],
+        "links": "-# 🔒 [Privacy Policy](https://emanueljoab.github.io/macaco/privacy) · 💬 [Support](https://discord.com/invite/y8REnkPgKK)"
     },
     "howgay": {
         "description1": "{0} is {1}% gay 🏳️‍🌈",
