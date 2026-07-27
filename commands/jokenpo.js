@@ -17,7 +17,7 @@ async function execute(message, args, db, translate) {
 
             if (!player2) {
                 player2 = {
-                    username: "Gerador de Macaco Aleatório",
+                    username: message.client.user.username,
                     id: "1243673463902834809",
                 };
             }
@@ -225,7 +225,9 @@ async function execute(message, args, db, translate) {
                 // serialize: garante que o INSERT rode antes do UPDATE
                 db.serialize(() => {
                     db.run("INSERT OR IGNORE INTO jokenpo_rank (guild_id, user_id, username, wins, losses) VALUES (?, ?, ?, 0, 0)", [guildId, userId, username]);
-                    db.run("UPDATE jokenpo_rank SET wins = wins + ?, losses = losses + ? WHERE guild_id = ? AND user_id = ?", [winsToAdd, lossesToAdd, guildId, userId], function (err) {
+                    // username no SET: o INSERT OR IGNORE acima só grava o nome na primeira
+                    // partida, então sem isso quem troca de nick fica congelado no rank
+                    db.run("UPDATE jokenpo_rank SET username = ?, wins = wins + ?, losses = losses + ? WHERE guild_id = ? AND user_id = ?", [username, winsToAdd, lossesToAdd, guildId, userId], function (err) {
                         if (err) {
                             error(message, `Erro ao atualizar a pontuação: ${err.message} `);
                         }
@@ -250,9 +252,10 @@ async function execute(message, args, db, translate) {
 
                         db.run(
                             `UPDATE jokenpo_history
-                                SET player1_wins = player1_wins + ?, player2_wins = player2_wins + ?
+                                SET player1_username = ?, player2_username = ?,
+                                    player1_wins = player1_wins + ?, player2_wins = player2_wins + ?
                                 WHERE player1_id = ? AND player2_id = ?`,
-                            [player1WinsToAdd, player2WinsToAdd, player1Id, player2Id],
+                            [player1Username, player2Username, player1WinsToAdd, player2WinsToAdd, player1Id, player2Id],
                             function (err) {
                                 if (err) {
                                     error(message, `Erro ao atualizar o histórico: ${err.message}`);

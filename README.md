@@ -1,4 +1,4 @@
-# 🐒 Gerador de Macaco Aleatório
+# 🐒 Macaco
 
 A Discord bot powered by monkeys.
 

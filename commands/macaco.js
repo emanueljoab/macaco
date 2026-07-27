@@ -228,12 +228,12 @@ async function execute(message, _args, _db, translate) {
             throw new Error("Não foi possível baixar a imagem após várias tentativas.");
         }
 
-        const attachment = new AttachmentBuilder(imageBuffer, { name: 'gerador-de-macaco-aleatorio.jpg' });
+        const attachment = new AttachmentBuilder(imageBuffer, { name: 'macaco.jpg' });
 
         const embed = new EmbedBuilder()
             .setTitle(`${titulo} 🐒`)
             .setDescription(descricaoFinal)
-            .setImage('attachment://gerador-de-macaco-aleatorio.jpg');
+            .setImage('attachment://macaco.jpg');
 
         await reply.edit({ embeds: [embed], files: [attachment] });
     } catch (err) {

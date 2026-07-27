@@ -226,6 +226,10 @@ const FATAL_LOGIN_CODES = new Set(["TokenInvalid", "TokenMissing", "DisallowedIn
 async function login() {
     while (true) {
         try {
+            // Passar o token explícito é obrigatório, não estilo: o client.login() chama
+            // destroy() quando falha, e o destroy() zera client.token. Sem o argumento, a 2ª
+            // tentativa lançaria TokenInvalid — que é fatal aqui — e mataria o processo numa
+            // queda de rede comum, justamente o que este loop existe pra sobreviver.
             return await client.login(process.env.TOKEN);
         } catch (err) {
             if (FATAL_LOGIN_CODES.has(err.code)) {
