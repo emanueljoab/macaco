@@ -2,7 +2,7 @@ require("dotenv").config();
 
 const readline = require("readline");
 
-const { Client, GatewayIntentBits, EmbedBuilder, ActivityType } = require("discord.js");
+const { Client, GatewayIntentBits, EmbedBuilder, ActivityType, Status } = require("discord.js");
 const { db, DEFAULT_PREFIX, getPrefix } = require("../database");
 const { loadTranslations, translate: translateRaw } = require("../translate");
 const { checkSpam } = require("../spam");
@@ -32,7 +32,39 @@ client.once("clientReady", async () => {
     client.user.setActivity({ name: "custom", state: "pls help", type: ActivityType.Custom });
     loadTranslations(); // Carregar traduções ao iniciar o bot
     log(null, `${client.user.tag} está online!`);
+    startHeartbeat();
 });
+
+// Heartbeat pro dead man's switch (healthchecks.io): o alarme mora fora do Pi, então cobre
+// também o Pi morrendo inteiro (queda de energia, travamento) — aí o pm2 morre junto e não
+// sobra ninguém pra avisar. Monitorar só o processo cobriria apenas uma das falhas possíveis.
+const HEARTBEAT_MS = 5 * 60 * 1000;
+const HEARTBEAT_TIMEOUT_MS = 10_000;
+
+let fetch;
+async function loadFetch() {
+    if (!fetch) {
+        fetch = (await import("node-fetch")).default;
+    }
+}
+
+function startHeartbeat() {
+    const url = process.env.HEALTHCHECK_URL;
+    if (!url) return warn(null, "HEALTHCHECK_URL não configurado; heartbeat desativado");
+
+    setInterval(async () => {
+        // Sem essa checagem o ping diria só que o Node está executando, que é o que o "pm2 ls"
+        // já mostra. Olhar o shard, e não client.isReady(): o status do WebSocketManager é uma
+        // trava de mão única (só Idle -> Ready, nunca volta), então num close irrecuperável com
+        // o bot já no ar (4014 intent revogado, 4004 token revogado) a discord.js marca só o
+        // shard como Disconnected e isReady() continuaria true com o bot mudo.
+        if (!client.ws.shards.some(shard => shard.status === Status.Ready)) return;
+        try {
+            await loadFetch();
+            await fetch(url, { signal: AbortSignal.timeout(HEARTBEAT_TIMEOUT_MS) });
+        } catch {} // Falhar em pingar já é o sinal; quem faz barulho é o serviço externo
+    }, HEARTBEAT_MS);
+}
 
 client.on("guildCreate", (guild) => {
     log(null, `Entrei num servidor novo: ${guild.name} (${guild.memberCount} membros)!`);
