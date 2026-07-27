@@ -28,6 +28,17 @@ const client = new Client({
     intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent],
 });
 
+// Usar isso, e não client.isReady(): o isReady() lê estado do WebSocketManager que não volta
+// atrás em dois casos. (1) O status do manager é trava de mão única (só Idle -> Ready), então
+// num close irrecuperável com o bot já no ar (4014 intent revogado, 4004 token revogado) a
+// discord.js marca só o shard como Disconnected e o isReady() segue true com o bot mudo.
+// (2) A flag "destroyed" nunca é resetada, e o client.login() chama destroy() a cada falha —
+// então depois de um único login falho (queda de luz: o bot sobe antes da rede) o isReady()
+// fica false pra sempre, mesmo depois de reconectar. O status do shard não tem nenhum dos dois.
+function isConnected() {
+    return client.ws.shards.some(shard => shard.status === Status.Ready);
+}
+
 client.once("clientReady", async () => {
     client.user.setActivity({ name: "custom", state: "pls help", type: ActivityType.Custom });
     loadTranslations(); // Carregar traduções ao iniciar o bot
@@ -54,11 +65,8 @@ function startHeartbeat() {
 
     setInterval(async () => {
         // Sem essa checagem o ping diria só que o Node está executando, que é o que o "pm2 ls"
-        // já mostra. Olhar o shard, e não client.isReady(): o status do WebSocketManager é uma
-        // trava de mão única (só Idle -> Ready, nunca volta), então num close irrecuperável com
-        // o bot já no ar (4014 intent revogado, 4004 token revogado) a discord.js marca só o
-        // shard como Disconnected e isReady() continuaria true com o bot mudo.
-        if (!client.ws.shards.some(shard => shard.status === Status.Ready)) return;
+        // já mostra.
+        if (!isConnected()) return;
         try {
             await loadFetch();
             await fetch(url, { signal: AbortSignal.timeout(HEARTBEAT_TIMEOUT_MS) });
@@ -86,7 +94,7 @@ const GUILD_SORTS = {
 function listGuilds(args) {
     const sortKey = args[0];
     if (sortKey && !GUILD_SORTS[sortKey]) return log(null, `Ordenação desconhecida: "${sortKey}" (opções: ${Object.keys(GUILD_SORTS).join(", ")})`);
-    if (!client.isReady()) return log(null, `O bot ainda não está online`);
+    if (!isConnected()) return log(null, `O bot ainda não está online`);
     const guilds = Array.from(client.guilds.cache.values());
     if (sortKey) guilds.sort(GUILD_SORTS[sortKey]); // Sem flag, mantém a ordem em que o Discord enviou
     for (const guild of guilds) {
@@ -224,7 +232,11 @@ async function login() {
                 error(null, `Não dá pra conectar no Discord: ${err.message}`);
                 process.exit(1); // Token ou intents errados; retry não resolve
             }
-            warn(null, `Falha ao conectar no Discord (${err.message}); tentando de novo em ${LOGIN_RETRY_MS / 1000}s`);
+            // O fetch da discord.js (undici) embrulha erro de rede: sobe "fetch failed" com o
+            // código real só em cause.code. Sem isso o log vira dezenas de linhas indistinguíveis
+            // entre "a rede não voltou" (EAI_AGAIN), "DNS quebrado" (ENOTFOUND) e Discord fora do ar.
+            const reason = err.cause?.code ?? err.code ?? err.message;
+            warn(null, `Falha ao conectar no Discord (${reason}); tentando de novo em ${LOGIN_RETRY_MS / 1000}s`);
             await new Promise(resolve => setTimeout(resolve, LOGIN_RETRY_MS));
         }
     }
