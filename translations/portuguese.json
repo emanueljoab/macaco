@@ -77,13 +77,13 @@
             "**`macaco`**: Gera um macaco aleatório.",
             "**`ping`**: Calcula o ping.",
             "**`pp`**: Mede o pipi.",
-            "**`rank`**: Exibe o ranking de pedra, papel e tesoura.",
+            "**`rank`**: Exibe vários rankings do servidor.",
             "**`servidor`**: Exibe informações acerca do servidor.",
             "**`simp`**: Mede o quão simp alguém é.",
             "**`fedor`**: Mede o fedor de alguém.",
             "**`perfil`**: Mostra informações sobre o usuário."
         ],
-        "links": "-# 🔒 [Política de Privacidade](https://emanueljoab.github.io/macaco/privacy) · 💬 [Suporte](https://discord.com/invite/y8REnkPgKK)"
+        "links": "-# 🔒 [Política de Privacidade](https://emanueljoab.github.io/macaco/privacy) · 📜 [Termos de Uso](https://emanueljoab.github.io/macaco/terms) · 💬 [Suporte](https://discord.com/invite/y8REnkPgKK)"
     },
     "howgay": {
         "description1": "{0} é {1}% gay 🏳️‍🌈",

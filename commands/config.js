@@ -121,7 +121,13 @@ async function execute(message, _args, _db, translate) {
             await interaction.showModal(modal);
 
             try {
-                const modalSubmit = await interaction.awaitModalSubmit({ time: 60000 });
+                const modalSubmit = await interaction.awaitModalSubmit({
+                    time: 60000,
+                    filter: (i) =>
+                        i.customId === "set-prefix" &&
+                        i.user.id === message.author.id &&
+                        i.guildId === message.guild.id,
+                });
                 const newPrefix = modalSubmit.fields.getTextInputValue("prefix-input").trim();
 
                 if (!newPrefix || /\s/.test(newPrefix)) {

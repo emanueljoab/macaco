@@ -14,8 +14,8 @@
       <div class="header-text">
         <h1>Macaco Bot</h1>
         <p>
-          <span class="en">Privacy Policy &mdash; last updated: July 25, 2026</span>
-          <span class="pt">Política de Privacidade &mdash; última atualização: 25 de julho de 2026</span>
+          <span class="en">Privacy Policy &mdash; last updated: August 9, 2026</span>
+          <span class="pt">Política de Privacidade &mdash; última atualização: 9 de agosto de 2026</span>
         </p>
       </div>
       <div class="header-actions">
@@ -44,42 +44,49 @@
       <span class="pt">2. Dados armazenados</span>
     </h2>
     <p class="en">
-      The bot permanently stores only the data strictly necessary for its operation. Message
-      content is <strong>never</strong> part of this data &mdash; see section 3 for how message
-      content is processed.
+      The bot stores in its database only the data necessary for its operation. Message content
+      is not stored in the database.
     </p>
     <p class="pt">
-      O bot armazena permanentemente apenas os dados estritamente necessários para seu
-      funcionamento. O conteúdo das mensagens <strong>nunca</strong> faz parte desses dados
-      &mdash; veja a seção 3 para saber como o conteúdo das mensagens é processado.
+      O bot armazena em seu banco de dados apenas os dados necessários para seu funcionamento. O
+      conteúdo das mensagens não é armazenado no banco de dados.
     </p>
     <ul class="en">
       <li><strong>Discord user ID and username</strong> — for rankings and match history.</li>
-      <li><strong>Server (guild) ID and name</strong> — to separate data between different servers.</li>
-      <li><strong>Game statistics</strong> — wins/losses in rock-paper-scissors and personal records for entertainment commands (<code>howgay</code>, <code>pp</code>, <code>simp</code>, <code>stank</code>).</li>
+      <li><strong>Server (guild) ID and name</strong> — to associate settings and bot data with Discord servers.</li>
+      <li><strong>Game statistics</strong> — rock-paper-scissors rankings and match history, and personal records for entertainment commands (<code>howgay</code>, <code>pp</code>, <code>simp</code>, <code>stank</code>).</li>
       <li><strong>Server language preference</strong> — Portuguese or English.</li>
       <li><strong>Server command prefix</strong> — the prefix configured for the server, if changed from the default.</li>
     </ul>
     <ul class="pt">
       <li><strong>ID e nome de usuário do Discord</strong> — para rankings e histórico de partidas.</li>
-      <li><strong>ID e nome do servidor (guild)</strong> — para separar dados entre servidores distintos.</li>
-      <li><strong>Estatísticas de jogo</strong> — vitórias/derrotas no jokenpo e recordes pessoais dos comandos de entretenimento (<code>howgay</code>, <code>pp</code>, <code>simp</code>, <code>stank</code>).</li>
+      <li><strong>ID e nome do servidor (guild)</strong> — para associar configurações e dados do bot aos servidores do Discord.</li>
+      <li><strong>Estatísticas de jogo</strong> — rankings e histórico de partidas de jokenpo e recordes pessoais dos comandos de entretenimento (<code>howgay</code>, <code>pp</code>, <code>simp</code>, <code>stank</code>).</li>
       <li><strong>Preferência de idioma do servidor</strong> — português ou inglês.</li>
       <li><strong>Prefixo de comando do servidor</strong> — o prefixo configurado para o servidor, caso alterado do padrão.</li>
     </ul>
+    <p class="en">
+      Some operational logs may contain command content and are retained for up to 30 days, as
+      described in sections 3 and 5.
+    </p>
+    <p class="pt">
+      Alguns logs operacionais podem conter conteúdo de comandos e são mantidos por até 30 dias,
+      conforme descrito nas seções 3 e 5.
+    </p>
 
     <h2>
       <span class="en">3. Message Content Processing</span>
       <span class="pt">3. Processamento do conteúdo das mensagens</span>
     </h2>
     <p class="en">
-      The bot reads message content in real time for the two purposes described below. In neither
-      case is message content written to a database or retained beyond the moment it is processed.
+      The bot reads message content in real time for the purposes described below. Message content
+      is not written to the bot's database, but some command information may be retained temporarily
+      in operational logs.
     </p>
     <p class="pt">
-      O bot lê o conteúdo das mensagens em tempo real para as duas finalidades descritas abaixo.
-      Em nenhum dos casos o conteúdo é gravado em banco de dados ou retido além do momento em que
-      é processado.
+      O bot lê o conteúdo das mensagens em tempo real para as finalidades descritas abaixo. O
+      conteúdo não é gravado no banco de dados do bot, mas algumas informações de comandos podem
+      ser mantidas temporariamente em logs operacionais.
     </p>
     <ul class="en">
       <li>
@@ -92,6 +99,11 @@
       <li>
         <strong>Command interpretation</strong> — the bot checks whether a message begins with the
         server's configured prefix in order to identify and execute a command.
+      </li>
+      <li>
+        <strong>Operational logs</strong> — for operation, diagnostics, and security, logs may
+        contain the username, server name, command executed, command result, errors, and content or
+        parameters submitted to commands.
       </li>
     </ul>
     <ul class="pt">
@@ -106,54 +118,76 @@
         <strong>Interpretação de comandos</strong> — o bot verifica se a mensagem começa com o
         prefixo configurado no servidor para identificar e executar um comando.
       </li>
+      <li>
+        <strong>Logs operacionais</strong> — para operação, diagnóstico e segurança, os logs podem
+        conter o nome de usuário, nome do servidor, comando executado, resultado do comando, erros e
+        conteúdo ou parâmetros enviados aos comandos.
+      </li>
     </ul>
     <p class="en">
       Message content used for spam detection is held only in memory. It is only eligible for
       comparison within the 10-second window; entries outside that window are purged by a periodic
       cleanup that runs every five minutes, or when the same user sends their next message. A
-      user's history is cleared immediately when a spam event is handled. Message content used for
-      command interpretation is read only to identify the command and is not retained afterwards.
+      user's history is cleared immediately when a spam event is handled. Message content that is
+      not included in the operational logs described above is not retained after processing.
     </p>
     <p class="pt">
       O conteúdo utilizado na detecção de spam é mantido somente em memória. Ele só é elegível para
       comparação dentro da janela de 10 segundos; entradas fora dessa janela são removidas por uma
       limpeza periódica executada a cada cinco minutos, ou quando o mesmo usuário envia sua
       mensagem seguinte. O histórico de um usuário é apagado imediatamente quando um evento de spam
-      é tratado. O conteúdo utilizado na interpretação de comandos é lido apenas para identificar o
-      comando e não é retido depois disso.
+      é tratado. O conteúdo que não fizer parte dos logs operacionais descritos acima não é retido
+      após o processamento.
     </p>
 
     <h2>
       <span class="en">4. Use of Stored Data</span>
       <span class="pt">4. Uso dos dados armazenados</span>
     </h2>
-    <p class="en">The data listed in section 2 is used solely for:</p>
-    <p class="pt">Os dados listados na seção 2 são utilizados somente para:</p>
+    <p class="en">The data described in sections 2 and 3 is used solely for:</p>
+    <p class="pt">Os dados descritos nas seções 2 e 3 são utilizados somente para:</p>
     <ul class="en">
-      <li>Displaying rankings and match history within the server.</li>
+      <li>Displaying rankings and match history.</li>
       <li>Persisting personal records between sessions.</li>
       <li>Applying the language and prefix preferences configured by the server.</li>
+      <li>Operating, monitoring, securing, and troubleshooting the bot.</li>
     </ul>
     <ul class="pt">
-      <li>Exibir rankings e histórico de partidas dentro do servidor.</li>
+      <li>Exibir rankings e histórico de partidas.</li>
       <li>Persistir recordes pessoais entre sessões.</li>
       <li>Aplicar as preferências de idioma e prefixo configuradas pelo servidor.</li>
+      <li>Operar, monitorar, proteger e diagnosticar problemas do bot.</li>
     </ul>
-    <p class="en">Data is <strong>not</strong> sold, shared, or used for commercial or advertising purposes.</p>
-    <p class="pt">Os dados <strong>não são</strong> vendidos, compartilhados nem utilizados para fins comerciais ou publicitários.</p>
+    <p class="en">
+      Data is <strong>not</strong> sold or used for commercial or advertising purposes. Information
+      necessary to fulfill a command may be sent to third-party services, which process it under
+      their own terms and privacy policies.
+    </p>
+    <p class="pt">
+      Os dados <strong>não são</strong> vendidos nem utilizados para fins comerciais ou
+      publicitários. Informações necessárias para atender a um comando podem ser enviadas a serviços
+      de terceiros, que as processam de acordo com seus próprios termos e políticas de privacidade.
+    </p>
 
     <h2>
       <span class="en">5. Retention and Deletion</span>
       <span class="pt">5. Retenção e exclusão</span>
     </h2>
     <p class="en">
-      Data is kept while the bot is present in the server or while the user continues to interact
-      with it. To request deletion of your data, contact us through the channels below.
+      Data stored in the bot's database is retained until its deletion is requested. To request
+      deletion of your data, contact us through the support server linked below.
     </p>
     <p class="pt">
-      Os dados são mantidos enquanto o bot estiver presente no servidor ou enquanto o usuário
-      continuar interagindo com ele. Para solicitar a exclusão dos seus dados, entre em contato
-      pelos canais abaixo.
+      Os dados armazenados no banco de dados do bot são mantidos até que sua exclusão seja solicitada.
+      Para solicitar a exclusão dos seus dados, entre em contato pelo servidor de suporte indicado abaixo.
+    </p>
+    <p class="en">
+      Operational logs are retained for up to 30 days and are then automatically deleted through
+      log rotation.
+    </p>
+    <p class="pt">
+      Os logs operacionais são mantidos por até 30 dias e depois são excluídos automaticamente por
+      meio da rotação de logs.
     </p>
 
     <h2>
@@ -161,12 +195,15 @@
       <span class="pt">6. Segurança</span>
     </h2>
     <p class="en">
-      Data is stored locally in an SQLite database on the bot host server.
-      No sensitive information (tokens, passwords, emails) is collected.
+      Data is stored locally in an SQLite database and in operational log files on the bot host
+      server. The bot does not request tokens, passwords, email addresses, or other
+      sensitive information. Users should not submit sensitive information through bot commands.
     </p>
     <p class="pt">
-      Os dados são armazenados localmente em banco de dados SQLite no servidor de hospedagem do bot.
-      Nenhuma informação sensível (tokens, senhas, e-mails) é coletada.
+      Os dados são armazenados localmente em banco de dados SQLite e em arquivos de logs operacionais
+      no servidor de hospedagem do bot. O bot não solicita tokens, senhas, endereços
+      de e-mail ou outras informações sensíveis. Os usuários não devem enviar informações sensíveis
+      por meio dos comandos do bot.
     </p>
 
     <h2>
@@ -186,14 +223,18 @@
       <span class="en">8. Contact</span>
       <span class="pt">8. Contato</span>
     </h2>
-    <p class="en">For questions, data deletion requests, or any other privacy-related matter:</p>
-    <p class="pt">Para dúvidas, solicitações de exclusão de dados ou qualquer outro assunto relacionado à privacidade:</p>
-    <div class="contact-links">
+    <p class="en">For questions, deletion requests, or other privacy matters, contact us through the Discord Support Server linked below.</p>
+    <p class="pt">Para dúvidas, solicitações de exclusão ou outros assuntos de privacidade, entre em contato pelo Servidor de Suporte no Discord indicado abaixo.</p>
+    <h2 style="margin-top: 2.5rem;">Links</h2>
+    <div class="links">
       <a href="https://discord.com/invite/y8REnkPgKK" target="_blank" rel="noopener noreferrer">
         💬 <span class="en">Discord Support Server</span><span class="pt">Servidor de Suporte no Discord</span>
       </a>
-      <a href="https://github.com/emanueljoab/macaco/issues" target="_blank" rel="noopener noreferrer">
-        🐙 GitHub Issues
+      <a href="https://github.com/emanueljoab/macaco" target="_blank" rel="noopener noreferrer">
+        🐙 GitHub
+      </a>
+      <a href="terms.html">
+        📜 <span class="en">Terms of Use</span><span class="pt">Termos de Uso</span>
       </a>
     </div>
 

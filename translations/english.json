@@ -74,17 +74,17 @@
             "**`flip`**: Toss a coin.",
             "**`help`**: Displays all commands.",
             "**`howgay`**: Measures how gay a person is.",
-            "**`jankenpon`**: Play a game of rock, paper, scissors.",
+            "**`rps`**: Play a game of rock, paper, scissors.",
             "**`monkey`**: Generates a random monkey.",
             "**`ping`**: Calculates ping.",
             "**`pp`**: Measure peepee.",
-            "**`rank`**: Displays the rock paper scissors ranking.",
+            "**`rank`**: Displays various server rankings.",
             "**`server`**: Displays information about the server.",
             "**`simp`**: Measures how simp someone is.",
             "**`stank`**: Measure someone's stench.",
             "**`user`**: Show information about the user."
         ],
-        "links": "-# 🔒 [Privacy Policy](https://emanueljoab.github.io/macaco/privacy) · 💬 [Support](https://discord.com/invite/y8REnkPgKK)"
+        "links": "-# 🔒 [Privacy Policy](https://emanueljoab.github.io/macaco/privacy) · 📜 [Terms of Use](https://emanueljoab.github.io/macaco/terms) · 💬 [Support](https://discord.com/invite/y8REnkPgKK)"
     },
     "howgay": {
         "description1": "{0} is {1}% gay 🏳️‍🌈",

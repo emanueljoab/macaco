@@ -73,6 +73,44 @@ body.lang-pt #lang-toggle:hover {
   color: #93c5fd;
 }
 
+.invite {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+}
+
+.invite a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #16a34a;
+  border: 1px solid #22c55e;
+  border-radius: 8px;
+  padding: 0.65rem 1.2rem;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.invite a:hover {
+  background: #15803d;
+  border-color: #4ade80;
+}
+
+.command-hint {
+  margin-top: 0.6rem;
+  color: #777;
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+.command-hint code {
+  color: #999;
+  font-family: monospace;
+}
+
 h2 {
   font-size: 1.05rem;
   font-weight: 600;
@@ -94,30 +132,15 @@ ul {
 
 li { margin-bottom: 0.3rem; }
 
-.contact-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  margin-top: 0.75rem;
-}
-
-.contact-links a {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  background: #1e1e24;
-  border: 1px solid #2a2a2e;
-  border-radius: 8px;
-  padding: 0.5rem 1rem;
+p a {
   color: #4ade80;
   text-decoration: none;
-  font-size: 0.9rem;
-  transition: border-color 0.2s, color 0.2s;
+  transition: color 0.2s;
 }
 
-.contact-links a:hover {
-  border-color: #16a34a;
+p a:hover {
   color: #86efac;
+  text-decoration: underline;
 }
 
 footer {
