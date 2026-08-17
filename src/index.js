@@ -1,12 +1,11 @@
 require("dotenv").config();
 
-const readline = require("readline");
-
+const io = require("@pm2/io");
 const { Client, GatewayIntentBits, EmbedBuilder, ActivityType, Status } = require("discord.js");
 const { db, DEFAULT_PREFIX, getPrefix } = require("../database");
 const { loadTranslations, translate: translateRaw } = require("../translate");
 const { checkSpam } = require("../spam");
-const { log, warn, error, matchPrefix, paint } = require("../utils");
+const { log, warn, error, matchPrefix } = require("../utils");
 
 const ball8 = require("../commands/8ball");
 const clima = require("../commands/clima");
@@ -84,42 +83,54 @@ client.on("guildDelete", (guild) => {
     log(null, `Saí do servidor: ${guild.name}`);
 });
 
-// Comandos digitados no console (terminal local ou painel do host)
+// Ações administrativas chamadas pelo PM2. A resposta volta pelo IPC do trigger,
+// sem passar por stdout/stderr
 const GUILD_SORTS = {
-    joined: (a, b) => a.joinedTimestamp - b.joinedTimestamp, // ordem em que o bot entrou
+    joined: (a, b) => a.joinedTimestamp - b.joinedTimestamp,
     name: (a, b) => a.name.localeCompare(b.name),
     members: (a, b) => b.memberCount - a.memberCount,
 };
 
-function listGuilds(args) {
-    const sortKey = args[0];
-    if (sortKey && !GUILD_SORTS[sortKey]) return log(null, `Ordenação desconhecida: "${sortKey}" (opções: ${Object.keys(GUILD_SORTS).join(", ")})`);
-    if (!isConnected()) return log(null, `O bot ainda não está online`);
+const GUILD_SORT_ALIASES = {
+    m: "members",
+    j: "joined",
+    n: "name",
+};
+
+function parseGuildSort(params) {
+    const value = typeof params === "string"
+        ? params
+        : Array.isArray(params)
+            ? params[0]
+            : params?.sort;
+    const normalized = typeof value === "string" ? value.trim().toLowerCase() : "";
+    return GUILD_SORT_ALIASES[normalized] ?? normalized;
+}
+
+function listGuilds(params) {
+    const sortKey = parseGuildSort(params);
+    if (sortKey && !GUILD_SORTS[sortKey]) {
+        return `Ordenação desconhecida: "${sortKey}" (opções: members/m, joined/j, name/n)`;
+    }
+    if (!isConnected()) return `O bot ainda não está online`;
+
     const guilds = Array.from(client.guilds.cache.values());
     if (sortKey) guilds.sort(GUILD_SORTS[sortKey]); // Sem flag, mantém a ordem em que o Discord enviou
-    for (const guild of guilds) {
+
+    const lines = guilds.map((guild) => {
         const detail = sortKey === "joined"
             ? new Date(guild.joinedTimestamp).toLocaleDateString("pt-BR", { timeZone: "America/Sao_Paulo" })
             : `${guild.memberCount} membros`;
-        log(null, `${guild.name} ${paint("dim", `(${detail})`)}`);
-    }
+        return `${guild.name} (${detail})`;
+    });
     const total = guilds.reduce((sum, guild) => sum + guild.memberCount, 0);
-    log(null, `Total: ${total} membros em ${guilds.length} servidores`);
+    lines.push(`Total: ${total} membros em ${guilds.length} servidores`);
+    return lines.join("\n");
 }
 
-const consoleCommands = {
-    guilds: listGuilds,
-    help: () => log(null, `Comandos de console: guilds [${Object.keys(GUILD_SORTS).join("|")}], help`),
-};
-
-readline.createInterface({ input: process.stdin }).on("line", (line) => {
-    const [command, ...args] = line.trim().toLowerCase().split(/\s+/);
-    if (!command) return;
-    const fn = consoleCommands[command];
-    if (fn) fn(args);
-    else log(null, `Comando de console desconhecido: "${command}" (digite "help")`);
+io.action("guilds", (params, reply) => {
+    reply(listGuilds(params));
 });
-process.stdin.on("error", () => {}); // Alguns hosts fecham o stdin; ignorar
 
 client.on("messageCreate", async (message) => {
     if (message.system) return; // Mensagens de sistema (criação de tópico, boost, etc.) não aceitam reply
