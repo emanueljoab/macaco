@@ -5,7 +5,7 @@ const { Client, GatewayIntentBits, EmbedBuilder, ActivityType, Status } = requir
 const { db, DEFAULT_PREFIX, getPrefix } = require("../database");
 const { loadTranslations, translate: translateRaw } = require("../translate");
 const { checkSpam } = require("../spam");
-const { log, warn, error, matchPrefix } = require("../utils");
+const { log, warn, error, matchPrefix, paint } = require("../utils");
 
 const ball8 = require("../commands/8ball");
 const clima = require("../commands/clima");
@@ -127,7 +127,7 @@ function listGuilds(params) {
         const detail = sortKey === "joined"
             ? new Date(guild.joinedTimestamp).toLocaleDateString("pt-BR", { timeZone: "America/Sao_Paulo" })
             : `${guild.memberCount} membros`;
-        return `${guild.name} (${detail})`;
+        return `${guild.name} ${paint("dim", `(${detail})`)}`;
     });
     const total = guilds.reduce((sum, guild) => sum + guild.memberCount, 0);
     lines.push(`Total: ${total} membros em ${guilds.length} servidores`);
