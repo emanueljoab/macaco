@@ -97,6 +97,12 @@ const GUILD_SORT_ALIASES = {
     n: "name",
 };
 
+const ADMIN_HELP = [
+    "Comandos administrativos:",
+    "  pm2 trigger macaco guilds [members|m|joined|j|name|n]",
+    "  pm2 trigger macaco help",
+].join("\n");
+
 function parseGuildSort(params) {
     const value = typeof params === "string"
         ? params
@@ -131,6 +137,12 @@ function listGuilds(params) {
 io.action("guilds", (params, reply) => {
     reply(listGuilds(params));
 });
+
+function showAdminHelp(reply) {
+    reply(ADMIN_HELP);
+}
+
+io.action("help", showAdminHelp);
 
 client.on("messageCreate", async (message) => {
     if (message.system) return; // Mensagens de sistema (criação de tópico, boost, etc.) não aceitam reply
