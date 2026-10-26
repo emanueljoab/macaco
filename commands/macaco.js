@@ -136,13 +136,19 @@ async function getRandomMonkey(message) {
                     const vernacularData = await fetchVernacularNames(species.key, message);
 
                     let vernacularName = null;
+                    let nomeEmPortugues = false;
                     if (languagePreference === 'english') {
                         const eng = vernacularData.results.find(v => v.language === 'eng');
                         if (eng) vernacularName = eng.vernacularName;
                     } else {
                         const por = vernacularData.results.find(v => v.language === 'por');
                         const eng = vernacularData.results.find(v => v.language === 'eng');
-                        vernacularName = por?.vernacularName || eng?.vernacularName || null;
+                        if (por?.vernacularName) {
+                            vernacularName = por.vernacularName;
+                            nomeEmPortugues = true;
+                        } else if (eng?.vernacularName) {
+                            vernacularName = eng.vernacularName;
+                        }
                     }
 
                     if (!vernacularName) continue;
@@ -154,7 +160,7 @@ async function getRandomMonkey(message) {
                     let description = species.descriptions[randomIndex].description.slice(0, 200);
                     if (description.length === 200) description += '...';
 
-                    return { nome: vernacularName, imagem: imageUrl, descricao: description, speciesKey: species.key };
+                    return { nome: vernacularName, imagem: imageUrl, descricao: description, speciesKey: species.key, nomeEmPortugues };
                 } catch {
                     continue;
                 }
@@ -182,7 +188,7 @@ async function execute(message, _args, _db, translate) {
             throw new Error("Não foi possível encontrar um macaco com imagem e descrição.");
         }
 
-        const { nome, descricao, local, speciesKey } = result;
+        const { nome, descricao, local, speciesKey, nomeEmPortugues } = result;
         let imagem = result.imagem;
 
         log(message, `${nome}`);
@@ -194,7 +200,7 @@ async function execute(message, _args, _db, translate) {
         let descricaoFinal = descricao;
 
         if (language === "portuguese" && !local) {
-            titulo = await translateText(nome, message);
+            if (!nomeEmPortugues) titulo = await translateText(nome, message);
             descricaoFinal = await translateText(descricao, message);
         }
 
